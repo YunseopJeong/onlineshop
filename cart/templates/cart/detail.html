@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    장바구니
+{% endblock %}
+
+{% block content %}
+{% for item in cart %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">이미지</th>
+                <th scope="col">제품명</th>
+                <th scope="col">제품 개수</th>
+                <th scope="col">개당 가격</th>
+                <th scope="col">총 가격</th>
+                <th scope="col">제거</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% with product=item.product %}
+            <tr>
+                <th scope="row">
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{{ product.image.url }}" class="img-thumbnail">
+                    </a>
+                </th>
+                <td>{{ product.name }}</td>
+                <td>
+                    <form action="{% url 'cart:product_add' product.id %}" method="post">
+                        {{ item.quantity_form.quantity }}
+                        {{ item.quantity_form.is_update }}
+                        <input type="submit" class="btn btn-success" value="Update">
+                        {% csrf_token %}
+                    </form>
+                </td>
+                <td class="num">{{ item.price }}￦</td>
+                <td class="num">{{ item.total_price }}￦</td>
+                <td><a href="{% url 'cart:product_remove' product.id %}">Remove</a></td>
+            </tr>
+            {% endwith %}
+          {% endfor %}
+        </tbody>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} 전체 리스트 페이지 {% endblock %}
+
+{% block content %}
+<div class="row">
+        <div class="col-2 ">
+            <div class="list-group">
+                <a href="/" class="list-group-item {% if not current_category %}active{% endif %}">All</a>
+                    {% for c in categories %}
+                    <a href="{{c.get_absolute_url}}"
+                       class="list-group-item {% if current_category.slug == c.slug %}active{% endif %}">{{c.name}}</a>
+                    {% endfor %}
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-4">
+                    <div class="card-columns card text-white bg-secondary mb-3">
+                        <img class="card-img-top" src="{{product.image.url}}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <p class="card-text">{{product.description}}</p> <h5>가격: <span
+                                class="badge badge-pill badge-success">{{product.price}}￦</span></h5>
+                            <a href="{{product.get_absolute_url}}" class="btn btn-success btn-lg">구매하기</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+</div>
+{% endblock %}
